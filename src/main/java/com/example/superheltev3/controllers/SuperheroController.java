@@ -23,9 +23,18 @@ public class SuperheroController {
     public ResponseEntity<List<Superhero>> getSuperhero(@PathVariable String id) {
         return new ResponseEntity<>(superheroService.getSuperhero(id), HttpStatus.OK);
     }
+    @GetMapping("/slet/{id}")
+    public ResponseEntity<String> deleteSuperhero(@PathVariable String id) {
+        return new ResponseEntity<>(superheroService.deleteSuperhero(id), HttpStatus.OK);
+    }
     @GetMapping("/opret")
     public ResponseEntity<List<Superhero>> createSuperhero(@RequestParam String id) {
         return new ResponseEntity<>(superheroService.createSuperhero(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/ret")
+    public ResponseEntity<List<Superhero>> editSuperhero(@RequestParam String id) {
+        return new ResponseEntity<>(superheroService.editSuperhero(id), HttpStatus.OK);
     }
 
     @GetMapping("velkommen/{id}")

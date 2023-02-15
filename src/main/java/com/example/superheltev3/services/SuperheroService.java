@@ -31,7 +31,36 @@ public class SuperheroService {
 
     public List<Superhero> createSuperhero(String id) {
         String[] data = id.split(",");
-        Superhero createdSuperhero = new Superhero(data[0], data[1], data[2], Integer.parseInt(data[3]), Double.parseDouble(data[4]));
-        return new ArrayList<>(List.of(createdSuperhero));
+        try {
+            Superhero createdSuperhero = new Superhero(data[0], data[1], data[2], Integer.parseInt(data[3]), Double.parseDouble(data[4]));
+            repository.addSuperhero(createdSuperhero);
+            return new ArrayList<>(List.of(createdSuperhero));
+        } catch (Exception exception) {
+            System.out.println(exception);
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Superhero> editSuperhero(String id) {
+        String[] data = id.split(",");
+        Superhero superheroToEdit = new Superhero(data[0], data[1], data[2], Integer.parseInt(data[3]), Double.parseDouble(data[4]));
+        ArrayList<Superhero> superheroes = (ArrayList<Superhero>) getAllSuperheroes();
+        boolean superheroFound = false;
+        for (Superhero superhero: superheroes) {
+            if (superhero.getName().equalsIgnoreCase(superheroToEdit.getName())) {
+                superheroFound = true;
+                superheroes.remove(superhero);
+                break;
+            }
+        }
+        if (superheroFound) {
+            repository.addSuperhero(superheroToEdit);
+        }
+        return new ArrayList<>(List.of(superheroToEdit));
+    }
+
+    public String deleteSuperhero(String id) {
+        boolean deletedSuccessfully = repository.delete(id);
+        return "Superhelten med navn: " + id + " er blevet slettet.";
     }
 }

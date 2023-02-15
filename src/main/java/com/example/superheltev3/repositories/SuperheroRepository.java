@@ -43,14 +43,15 @@ public class SuperheroRepository {
         this.superheroes.add(superhero);
     }
 
-    public void delete(String name) {
+    public boolean delete(String name) {
         for (Superhero superhero: superheroes) {
             if (superhero.getName().toLowerCase().contains(name.toLowerCase())) {
                 superheroes.remove(superhero);
                 setChangesMade();
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     public void sortSuperheroes(int choice) {
