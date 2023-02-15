@@ -28,4 +28,10 @@ public class SuperheroService {
         }
         return superheroes;
     }
+
+    public List<Superhero> createSuperhero(String id) {
+        String[] data = id.split(",");
+        Superhero createdSuperhero = new Superhero(data[0], data[1], data[2], Integer.parseInt(data[3]), Double.parseDouble(data[4]));
+        return new ArrayList<>(List.of(createdSuperhero));
+    }
 }
