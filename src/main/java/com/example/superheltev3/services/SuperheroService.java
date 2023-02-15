@@ -43,24 +43,33 @@ public class SuperheroService {
 
     public List<Superhero> editSuperhero(String id) {
         String[] data = id.split(",");
-        Superhero superheroToEdit = new Superhero(data[0], data[1], data[2], Integer.parseInt(data[3]), Double.parseDouble(data[4]));
-        ArrayList<Superhero> superheroes = (ArrayList<Superhero>) getAllSuperheroes();
-        boolean superheroFound = false;
-        for (Superhero superhero: superheroes) {
-            if (superhero.getName().equalsIgnoreCase(superheroToEdit.getName())) {
-                superheroFound = true;
-                superheroes.remove(superhero);
-                break;
+        try {
+            Superhero superheroToEdit = new Superhero(data[0], data[1], data[2], Integer.parseInt(data[3]), Double.parseDouble(data[4]));
+            ArrayList<Superhero> superheroes = (ArrayList<Superhero>) getAllSuperheroes();
+            boolean superheroFound = false;
+            for (Superhero superhero: superheroes) {
+                if (superhero.getName().equalsIgnoreCase(superheroToEdit.getName())) {
+                    superheroFound = true;
+                    superheroes.remove(superhero);
+                    break;
+                }
             }
+            if (superheroFound) {
+                repository.addSuperhero(superheroToEdit);
+            }
+            return new ArrayList<>(List.of(superheroToEdit));
+        } catch (Exception exception) {
+            System.out.println(exception);
+            return new ArrayList<>();
         }
-        if (superheroFound) {
-            repository.addSuperhero(superheroToEdit);
-        }
-        return new ArrayList<>(List.of(superheroToEdit));
     }
 
     public String deleteSuperhero(String id) {
         boolean deletedSuccessfully = repository.delete(id);
-        return "Superhelten med navn: " + id + " er blevet slettet.";
+        if (deletedSuccessfully) {
+            return "Superhelten med navnet " + id + " er blevet slettet.";
+        } else {
+            return "Der var ingen superhelte med navnet: " + id;
+        }
     }
 }
